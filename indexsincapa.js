@@ -1,9 +1,12 @@
 import express from "express";
 import cors from 'cors';
+import env from 'dotenv';
+import mongoose from "mongoose";
+env.config();
 
+
+const port = process.env.PORT;
 const app = express();
-const port = 3000;
-
 // Middleware to parse JSON
 app.use(express.json());
 
@@ -132,6 +135,10 @@ app.delete('/productos/fisico/:id', (req, res) => {
 app.use((req, res) => {
   res.status(404).json({ error: 'Ruta no encontrada' });
 });
+
+mongoose.connect("mongodb://localhost:27017/backblogs")
+    .then(() => console.log("Conectado a la base de datos"))
+    .catch((error) => console.log(error));
 
 // Start the server
 app.listen(port, () => {

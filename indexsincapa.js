@@ -2,6 +2,7 @@ import express from "express";
 import cors from 'cors';
 import env from 'dotenv';
 import mongoose from "mongoose";
+import Producto from "./modelproducto.js";
 env.config();
 
 
@@ -52,10 +53,13 @@ app.get('*', (req, res, next) => {
 
 
 // Route to get all products
-app.get('/productos', (req, res) => {
+app.get('/productos', async (req, res) => {
   try {
-    res.json(productos.filter(producto => !producto.eliminado)); // Only return non-deleted products
+     // Only return non-deleted products
+    const productos2 = await Producto.find({ eliminado: false });
+    res.json(productos2);
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: 'Error al obtener los productos' });
   }
 });
@@ -72,7 +76,7 @@ app.get('/productos/:id', (req, res) => {
 });
 
 // Route to add a new product
-app.post('/productos', (req, res) => {
+app.post('/productos', async (req, res) => {
   try {
     const { nombre, precio } = req.body;
     if (!nombre || !precio) {
@@ -80,7 +84,8 @@ app.post('/productos', (req, res) => {
     }
 
     const nuevoProducto = { id: Date.now(), nombre, precio, eliminado: false };
-    productos.push(nuevoProducto);
+    const productoExistente = await Producto.create(nuevoProducto);
+    productos.push(productoExistente);
 
     res.status(201).json({ message: 'Producto agregado', producto: nuevoProducto });
   } catch (error) {

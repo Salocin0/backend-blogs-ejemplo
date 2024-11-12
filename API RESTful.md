@@ -46,8 +46,5 @@ Supongamos una API RESTful para gestionar usuarios:
 - `GET /usuarios` — Obtiene una lista de usuarios.
 - `GET /usuarios/1` — Obtiene los detalles del usuario con ID 1.
 - `POST /usuarios` — Crea un nuevo usuario.
-- `PUT /usuarios/1` — Actualiza el usuario con ID 1.
-- `DELETE /usuarios/1` — Elimina el usuario con ID 1.
-
-
-ctrl + k -> v
+- `PUT /usuarios/1` — Actualiza el usuario con ID 
+- `DELETE /usuarios/1` — Elimina el usuario con ID 

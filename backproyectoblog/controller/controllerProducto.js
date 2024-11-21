@@ -5,11 +5,23 @@ import {
   updateProduct,
   deleteProduct,
   deleteDefinitiveProduct,
-  getProductsPaginados
+  getProductsPaginados,
+  getProductsFiltrados
 } from "../service/serviceProducto.js";
 export const getProductsController = async (req, res) => {
   try {
     const products = await getProducts();
+    res.status(200).json({status: "success", menssage: "productos obtenidos", data:products});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({status: "error", menssage: "error en el servidor", data:{}});
+  }
+};
+
+export const getProductsFiltradosController = async (req, res) => {
+  try {
+    const { name, priceMin, priceMax, sortBy, order } = req.query;
+    const products = await getProductsFiltrados(name, priceMin, priceMax, sortBy, order);
     res.status(200).json({status: "success", menssage: "productos obtenidos", data:products});
   } catch (error) {
     console.log(error);

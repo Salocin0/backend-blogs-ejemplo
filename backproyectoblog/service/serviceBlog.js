@@ -9,8 +9,13 @@ export const getBlog = async (id) => {
     const blog = await Blog.findOne({id:id});
     return blog
 }
-export const createBlog = async (titulo,descripcion,contenido,imagen) => {
-    const blog = await Blog.create({id:crypto.randomUUID(),titulo,descripcion,contenido,imagen});
+
+export const getBlogpopulado = async (id) => {
+    const blog = await Blog.findOne({id:id}).populate("autor");
+    return blog
+}
+export const createBlog = async (titulo,descripcion,contenido,imagen,autor) => {
+    const blog = await Blog.create({id:crypto.randomUUID(),titulo,descripcion,contenido,imagen,autor});
     return blog
 }
 export const updateBlog = async (id,titulo,descripcion,contenido,imagen) => {

@@ -6,6 +6,18 @@ export const getProducts = async () => {
     return productos;
 };
 
+export const getProductsPaginados = async (skip,limit,page) => {
+    const productos = await Producto.find().skip(skip).limit(limit);
+    const cantidad = await Producto.countDocuments();   
+    const resultado = {
+        productos: productos,
+        totalitems: cantidad,
+        totalPage: Math.ceil(cantidad/ limit),
+        currentPage: page,
+    }
+    return resultado;
+};
+
 export const getProduct = async (id) => {
     const producto = await Producto.findOne({id:id}) // no usamos el findById porque machea con el _id
     return producto;

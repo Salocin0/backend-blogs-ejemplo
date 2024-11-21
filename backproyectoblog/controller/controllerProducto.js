@@ -5,10 +5,23 @@ import {
   updateProduct,
   deleteProduct,
   deleteDefinitiveProduct,
+  getProductsPaginados
 } from "../service/serviceProducto.js";
 export const getProductsController = async (req, res) => {
   try {
     const products = await getProducts();
+    res.status(200).json({status: "success", menssage: "productos obtenidos", data:products});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({status: "error", menssage: "error en el servidor", data:{}});
+  }
+};
+
+export const getProductsPaginadoController = async (req, res) => {
+  try {
+    const {page = 1, limit = 10} = req.query;
+    const offset = (page - 1) * limit;
+    const products = await getProductsPaginados(offset,limit,page);
     res.status(200).json({status: "success", menssage: "productos obtenidos", data:products});
   } catch (error) {
     console.log(error);

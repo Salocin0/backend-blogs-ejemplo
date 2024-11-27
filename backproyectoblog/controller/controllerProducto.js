@@ -8,6 +8,7 @@ import {
   getProductsPaginados,
   getProductsFiltrados
 } from "../service/serviceProducto.js";
+import { validationResult } from "express-validator";
 export const getProductsController = async (req, res) => {
   try {
     const products = await getProducts();
@@ -56,9 +57,11 @@ export const getProductController = async (req, res) => {
 
 export const createProductController = async (req, res) => {
   try {
-    const { nombre, precio } = req.body;
-    if (!nombre || !precio) {
-      return res.status(400).json({status: "error", menssage: "faltan datos", data:{}});
+    const { nombre="asd", precio } = req.body;
+    const errors = validationResult(req);
+    console.log(errors)
+    if (!errors.isEmpty()) {
+      return res.status(400).json({status: "error", menssage: "faltan datos", data:{}, errors: errors.array() });
     }
     const producto = await createProduct(nombre, precio);
     return res.status(201).json({status: "success", menssage: "Producto creado", data:producto});
